@@ -1,6 +1,6 @@
 import sqlite3
 
-class db():
+class Database():
     def __init__(self):
         conn=sqlite3.connect("mydatabase.db")
         try:
@@ -13,24 +13,24 @@ class db():
 
 #--------------------taula users---------------------------------------------------------------------------------
 
-    def get_name(self,ID):
+    def get_names(self):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_name=conn.execute("""select name from users where ID = ?""", (ID,))
-        name = [row for row in cursor_get_name]
+        cursor_get_names=conn.execute("""select name,ID from users""")
+        names = [row for row in cursor_get_names]
         conn.close()
-        return name
-    def get_tagid(self,ID):
+        return names
+    def get_tagids(self):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_tagid=conn.execute("""select tagid from users where ID = ?""", (ID,))
-        tagid = [row for row in cursor_get_tagid]
+        cursor_get_tagids=conn.execute("""select tagid,ID from users""")
+        tagids = [row for row in cursor_get_tagids]
         conn.close()
-        return tagid
-    def get_username(self,ID):
+        return tagids
+    def get_usernames(self):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_user=conn.execute("""select username from users where ID = ?""", (ID,))
-        user = [row for row in cursor_get_user]
+        cursor_get_users=conn.execute("""select username,ID from users""")
+        users = [row for row in cursor_get_users]
         conn.close()
-        return user
+        return users
 
     def set_name(self,name,ID):
         conn=sqlite3.connect("mydatabase.db")
@@ -52,11 +52,11 @@ class db():
         conn=sqlite3.connect("mydatabase.db")
         #------------Obtencio automatica de numero de Id---------
         ID=0
-        cursor=conn.execute("select * from users")
-        for row in cursor:
+        cursor_id=conn.execute("select * from users")
+        for row in cursor_id:
             ID=ID+1
         #--------------------------------------------------------         
-        cursor_user=conn.execute("insert into users (ID,name,tagid,username) values(?, ?, ?, ?)", (ID,name,tagid,username))
+        cursor_save=conn.execute("insert into users (ID,name,tagid,username) values(?, ?, ?, ?)", (ID,name,tagid,username))
         conn.commit()
         conn.close()
 
@@ -77,24 +77,24 @@ class db():
 
 if __name__=="__main__":
 
-    #newdb=db()
-    #newdb.set_name("rajoy",34)
-    #newdb.set_tagid("raul",34)
-    #newdb.set_username("PP",34)
-    #print newdb.get_name(34)
-    #print newdb.get_tagid(34)
-    #print newdb.get_username(34)
-    #newdb.set_name("ramses",34)
-    #newdb.set_tagid("ramon",34)
-    #newdb.set_username("PSOE",34)
-    #print newdb.get_name(34)
-    #print newdb.get_tagid(34)
-    #print newdb.get_username(34)
+    newdb=Database()
+    newdb.set_name("rajoy",34)
+    newdb.set_tagid("raul",34)
+    newdb.set_username("PP",34)
+    print newdb.get_name()
+    print newdb.get_tagid()
+    print newdb.get_username()
+    newdb.set_name("ramses",34)
+    newdb.set_tagid("ramon",34)
+    newdb.set_username("PSOE",34)
+    print newdb.get_name()
+    print newdb.get_tagid()
+    print newdb.get_username()
 
-    #newdb.set_liters(30,34)
-    #newdb.set_liters(20,34)
-    #newdb.set_liters(7,32)
-    #newdb.set_liters(11,31)
+    newdb.set_liters(30,34)
+    newdb.set_liters(20,34)
+    newdb.set_liters(7,32)
+    newdb.set_liters(11,31)
 
-    #print newdb.get_liters(34)
+    print newdb.get_liters(34)
 
