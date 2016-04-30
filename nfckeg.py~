@@ -1,4 +1,7 @@
 from db import Database
+from sensors import Sensor 
+from sensors import Flow 
+from sensors import Nfc 
 
 class nfckeg():
 
@@ -9,34 +12,37 @@ class nfckeg():
         self.isTag=False
 
     def calculate_dif():
-        self.consume=self.lecture_near-self.lecture_out
+        dif=self.lecture_near-self.lecture_out
         return dif
 
-    def add_dif(self):
+    def add_dif(self,dif):
         if self.lecture_near is not None and self.lecture_out is not None:
             (tagids,ID)=newdb.get_tagids
             for tagid in tagids:
-                if tagid == current_tagid
+                if tagid == current_tagid:
                     self.isTag=True
-                    newdb.set_liters(self.consume,ID)
+                    newdb.set_liters(dif,ID)
                     msg="lecture added"
                     break
             if isTag == False:
                 msg="No tagid matches"
                 return msg
 
-    def mainloop(self)
+    def mainloop(self):
         while True:
-            if nfc.nfc_near()==True:
-                self.lecture_near=flow.get_flow()
-                if nfc.nfc_out()==True:
-                    self.lecture_out=flow.get_flow()
-                    calculate_dif(self.lecture_near,self.lecture_out)
-                    print add_dif()
+            Nfc.do()
+            if (is_near, is_out)==(True,False):
+                self.lecture_near=Flow.get_flow()
+                (is_near, is_out)=Nfc.do()
+                if (is_near, is_out)==(True,True):
+                    self.lecture_out=Flow.get_flow()
+                    dif=calculate_dif(self.lecture_near,self.lecture_out)
+                    print add_dif(dif)
                     
 
                     
 
 if __name__ == "__main__":
 
-newkeg=nfckeg()
+    newkeg=nfckeg()
+    newkeg.mainloop()

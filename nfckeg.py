@@ -1,42 +1,60 @@
 from db import Database
+from sensors import Sensor 
+from sensors import Flow 
+from sensors import Nfc 
 
 class nfckeg():
 
+    """Class for Ambrosio Personal Digital Butler
+    Will run our house"""
     def __init__(self):
-        self.lecture_near=None
-        self.lecture_out=None
-        self.newdb=Database()
-        self.isTag=False
+        super(nfckeg, self).__init__()
+        self.cl = CommandList()
+        self.actions = []
+        self.actions.append(ac.MusicPlayer())
+        self.actions.append(ac.SensorAction())
 
-    def calculate_dif():
-        dif=self.lecture_near-self.lecture_out
-        return dif
 
-    def add_dif(self,dif):
-        if self.lecture_near is not None and self.lecture_out is not None:
-            (tagids,ID)=newdb.get_tagids
-            for tagid in tagids:
-                if tagid == current_tagid
-                    self.isTag=True
-                    newdb.set_liters(dif,ID)
-                    msg="lecture added"
-                    break
-            if isTag == False:
-                msg="No tagid matches"
-                return msg
+    def next_command(self):
+        try:
+            return self.cl.next()
+        except:
+            return (None, None)
 
-    def mainloop(self)
+
+    def execute_command(self, command):
+        print "Will execute", command
+        # Foreach Action in actions.
+        #   if is_for_you()
+        #       action.do
+        words = command.split()
+        first_word = words[0]
+        rest_words = words[1:]
+        response = None
+        for a in self.actions:
+            if a.is_for_you(first_word):
+                response = a.do(rest_words)
+                break
+        else:
+            print "No t'entenc"
+        return response
+
+    def mainloop(self):
+        # While True:
+        #   command = get_command
+        #   do_command(command)
+        #   update
         while True:
-            if nfc.nfc_near()==True:
-                self.lecture_near=flow.get_flow()
-                if nfc.nfc_out()==True:
-                    self.lecture_out=flow.get_flow()
-                    dif=calculate_dif(self.lecture_near,self.lecture_out)
-                    print add_dif(dif)
-                    
+            chan, command = self.next_command()
+            if command:
+                response = self.execute_command(command)
+                chan.respond(response)
 
-                    
+            time.sleep(1)
+            self.update_channels()
+
 
 if __name__ == "__main__":
 
-newkeg=nfckeg()
+    newkeg=nfckeg()
+    newkeg.mainloop()

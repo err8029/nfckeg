@@ -1,0 +1,13 @@
+
+class Sensor():
+
+    def __init__():
+        super(Sensor,self).__init__()
+
+    def do (self):
+        pass
+
+    def is_for_you(self, word):
+        pass
+
+
