@@ -5,7 +5,7 @@ class Database():
         conn=sqlite3.connect("mydatabase.db")
         try:
             cursor=conn.execute("create table users(ID integer, name text, tagid text, username text)")
-            cursor=conn.execute("create table beer(ID integer, liters real)")            
+            cursor=conn.execute("create table beer(ID integer, liters real)")
         except:
             cursor=conn.cursor()
         conn.commit()
@@ -13,21 +13,21 @@ class Database():
 
 #--------------------taula users---------------------------------------------------------------------------------
 
-    def get_names(self):
+    def get_names(self,name):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_names=conn.execute("""select name,ID from users""")
+        cursor_get_names=conn.execute("""select name,ID from users where name = ?""", (name,))
         names = [row for row in cursor_get_names]
         conn.close()
         return names
-    def get_tagids(self):
+    def get_tagids(self,tagid):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_tagids=conn.execute("""select tagid,ID from users""")
+        cursor_get_tagids=conn.execute("""select tagid,ID from users where tagid = ?""", (tagid,))
         tagids = [row for row in cursor_get_tagids]
         conn.close()
         return tagids
-    def get_usernames(self):
+    def get_usernames(self, usernames):
         conn=sqlite3.connect("mydatabase.db")
-        cursor_get_users=conn.execute("""select username,ID from users""")
+        cursor_get_users=conn.execute("""select username,ID from users = ?""", (usernames,))
         users = [row for row in cursor_get_users]
         conn.close()
         return users
@@ -55,7 +55,7 @@ class Database():
         cursor_id=conn.execute("select * from users")
         for row in cursor_id:
             ID=ID+1
-        #--------------------------------------------------------         
+        #--------------------------------------------------------
         cursor_save=conn.execute("insert into users (ID,name,tagid,username) values(?, ?, ?, ?)", (ID,name,tagid,username))
         conn.commit()
         conn.close()
@@ -63,7 +63,7 @@ class Database():
 #--------------------taula beer---------------------------------------------------------------------------------
 
     def set_liters(self,liters,ID):
-        conn=sqlite3.connect("mydatabase.db")         
+        conn=sqlite3.connect("mydatabase.db")
         cursor_user=conn.execute("insert into beer (ID,liters) values(?, ?)", (ID,liters))
         conn.commit()
         conn.close()
@@ -78,23 +78,5 @@ class Database():
 if __name__=="__main__":
 
     newdb=Database()
-    newdb.set_name("rajoy",34)
-    newdb.set_tagid("raul",34)
-    newdb.set_username("PP",34)
-    print newdb.get_name()
-    print newdb.get_tagid()
-    print newdb.get_username()
-    newdb.set_name("ramses",34)
-    newdb.set_tagid("ramon",34)
-    newdb.set_username("PSOE",34)
-    print newdb.get_name()
-    print newdb.get_tagid()
-    print newdb.get_username()
-
-    newdb.set_liters(30,34)
-    newdb.set_liters(20,34)
-    newdb.set_liters(7,32)
-    newdb.set_liters(11,31)
-
-    print newdb.get_liters(34)
-
+    #newdb.save("mariano rajoy","00x1","rajoy65")
+    print newdb.get_tagids("00x1")

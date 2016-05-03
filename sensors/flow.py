@@ -13,27 +13,20 @@ class Flow(Sensor):
     def setup(self):
         time.sleep(self.n)
 
-    def get_data(self):        
+    def get_data(self):
         for second in self.time:
             list_readings = ['20','40','10','55','0',None]
-            setup()
+            self.setup()
             reading_chosen = choice(list_readings)
             if reading_chosen is not None:
                 self.flow_readings.append(int(reading_chosen))
         return self.flow_readings
 
-    def get_cumulative(self):
+    def get_cumulative(self,readings):
         for flow in self.flow_readings:
             self.cumulative_flow = self.cumulative_flow+flow
-        return self.cumulative_flow 
+        return self.cumulative_flow
 
     def reset_cumulative(self):
         self.cumulative_flow = 0
         return self.cumulative_flow
-
-if __name__ == "__main__":
-
-    newnfc=Flow()
-    print newnfc.get_data()
-    print newnfc.get_cumulative()
-

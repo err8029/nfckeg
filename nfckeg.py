@@ -1,43 +1,31 @@
 from db import Database
-from sensors import Sensor 
-from sensors import Flow 
-from sensors import Nfc 
+from sensors import Sensor
+from sensors import Flow
+from sensors import Nfc
 
 class nfckeg():
 
     """Class for Ambrosio Personal Digital Butler
     Will run our house"""
     def __init__(self):
-        super(nfckeg, self).__init__()
-        self.cl = CommandList()
-        self.actions = []
-        self.actions.append(ac.MusicPlayer())
-        self.actions.append(ac.SensorAction())
-
-
-    def next_command(self):
-        try:
-            return self.cl.next()
-        except:
-            return (None, None)
-
-
-    def execute_command(self, command):
-        print "Will execute", command
-        # Foreach Action in actions.
-        #   if is_for_you()
-        #       action.do
-        words = command.split()
-        first_word = words[0]
-        rest_words = words[1:]
-        response = None
-        for a in self.actions:
-            if a.is_for_you(first_word):
-                response = a.do(rest_words)
-                break
-        else:
-            print "No t'entenc"
-        return response
+        self.new_database = Database()
+        self.new_nfc = Nfc()
+        self.new_flow = Flow()
+        pass
+    def read_flow(self):
+        is_card = False
+        while is_card != True:
+            (is_card, tag_id_in) = self.new_nfc.get_data()
+        flow_readings = self.new_flow.get_data()
+        data_in = self.new_flow.get_cumulative(flow_readings)
+        tag_id_out = None
+        print tag_id_in
+        while is_card != False:
+            (is_card, tag_id_out) = self.new_nfc.get_data()
+        data_out = self.new_flow.get_cumulative(flow_readings)
+        flow_readings = self.new_flow.get_data()
+        dif_data = abs(data_out-data_in)
+        return dif_data, tag_id_in
 
     def mainloop(self):
         # While True:
@@ -45,13 +33,13 @@ class nfckeg():
         #   do_command(command)
         #   update
         while True:
-            chan, command = self.next_command()
-            if command:
-                response = self.execute_command(command)
-                chan.respond(response)
+            (dif, tag_id) = self.read_flow()
+            print dif
+            print tag_id
+            id_user = self.new_database.get_tagids(str(tag_id))
+            print id_user
+            self.new_database.set_liters(str(dif),id_user)
 
-            time.sleep(1)
-            self.update_channels()
 
 
 if __name__ == "__main__":

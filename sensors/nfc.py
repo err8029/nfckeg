@@ -12,11 +12,13 @@ class Nfc(Sensor):
         time.sleep(self.n)
 
     def get_data(self):
-        read_tagids=["00x001",None]
-        setup()
+        read_tagids=["00x1",None]
+        self.setup()
+        is_card = False
         read_tagid = choice(read_tagids)
         if read_tagid is not None:
-            return read_tagid
+            return (True,read_tagid)
+        return (False,read_tagid)
 
     def get_cumulative(self):
         pass
@@ -24,7 +26,7 @@ class Nfc(Sensor):
     def reset_cumulative(self):
         pass
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
 
-    newnfc=Nfc()
-    print newnfc.setup()
+#    newnfc=Nfc()
+#    print newnfc.get_data()
